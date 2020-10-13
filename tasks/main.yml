@@ -1,0 +1,19 @@
+---
+- name: "Preflight Checks"
+  include_tasks: "00-preflight-checks.yml"
+
+- name: "Configure instances Elasticsearch"
+  include_tasks: "01-instances.yml"
+  when: xpack.security.enabled and certificates.elasticsearch.generate
+
+- name: "Generate Elasticsearch certificates"
+  include_tasks: "02-certificates-elasticsearch.yml"
+  when: xpack.security.enabled and certificates.elasticsearch.generate
+
+- name: "Configure instances Logstash"
+  include_tasks: "01-instances.yml"
+  when: xpack.security.enabled and certificates.logstash.generate
+
+- name: "Generate Logstash certificates"
+  include_tasks: "03-certificates-logstash.yml"
+  when: xpack.security.enabled and certificates.logstash.generate

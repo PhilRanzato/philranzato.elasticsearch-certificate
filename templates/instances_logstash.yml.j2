@@ -1,0 +1,8 @@
+instances:
+{% for lgs in groups['logstash']%}
+  - name: "{{ lgs | regex_replace('\..+', '') }}"
+    ip:
+      - "{{ hostvars[lgs].ansible_default_ipv4.address }}"
+    dns:
+      - "{{ lgs }}"
+{% endfor %}

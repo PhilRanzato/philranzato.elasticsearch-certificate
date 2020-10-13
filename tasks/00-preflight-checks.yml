@@ -1,0 +1,27 @@
+---
+- name: "End the play for hosts that do not run CentOS or RHEL"
+  meta: end_host
+  when:
+  - ansible_distribution != 'CentOS' and ansible_distribution != 'RedHat' 
+
+- name: "Check if the CA certificate exist"
+  stat:
+    path: "{{ ca.dir }}/{{ ca.cert.file }}"
+  register: ca_cert_exists
+  ignore_errors: true
+
+- name: "Check if the CA key exist"
+  stat:
+    path: "{{ ca.dir }}/{{ ca.key.file }}"
+  register: ca_key_exists
+  ignore_errors: true
+
+- name: "End the play if the CA certificate does not exists on {{ inventory_hostname }}"
+  fail: 
+    msg: "CA certificate does not exist"
+  when: "not ca_cert_exists.stat.exists"
+
+- name: "End the play if the CA key does not exists on {{ inventory_hostname }}"
+  fail: 
+    msg: "CA key does not exist"
+  when: "not ca_key_exists.stat.exists"

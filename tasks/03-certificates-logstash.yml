@@ -1,0 +1,23 @@
+---
+- name: "Ensure the CA is already been converted into pem format"
+  stat:
+    path: "{{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }}"
+  register: ca_pem
+  ignore_errors: true
+
+- name: "Fail if the CA has not been converted"
+  fail:
+    msg: "{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }} not found"
+  when: not ca_pem.stat.exists
+
+# /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-key /opt/private/ssl/elastic-CA-key.pem --ca-pass 'El4stic!' --ca-cert /opt/private/ssl/elastic-CA.crt --silent -in instances_elasticsearch.yml --pass 'Lgs-P4ssw0rd!' -out /opt/private/ssl/logstash-certificates.zip
+- name: "Create logstash certificates with elasticsearch-certutil"
+  command: >
+    /usr/share/elasticsearch/bin/elasticsearch-certutil cert \
+    --ca-key {{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }} \
+    --ca-cert {{ ca.dir }}/{{ ca.cert.file }} \
+    --ca-pass '{{ ca.key.pass }}' \
+    --silent \
+    -in instances_logstash.yml \
+    --pass '{{ certificates.logstash.pass }}' \
+    -out {{ ca.dir }}/logstash-certificates.zip
