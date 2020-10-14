@@ -76,7 +76,10 @@ Proprietary
 Author Information
 ------------------
 
-Check me on [LinkedIn](www.linkedin.com/in/phil-ranzato-47b8bb194)
+Get in touch with me at:
+- [LinkedIn](www.linkedin.com/in/phil-ranzato-47b8bb194)
+- [GitHub](https://github.com/PhilRanzato)
+- [Medium](https://medium.com/@philranzato)
 
 Tasks Analysis
 ------------------
@@ -106,4 +109,16 @@ Tasks Analysis
     -in instances_elasticsearch.yml \
     --pass '{{ certificates.elasticsearch.pass }}' \
     -out {{ ca.dir }}/elasticsearch-certificates.zip
+
+# /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-key /opt/private/ssl/elastic-CA-key.pem --ca-pass 'El4stic!' --ca-cert /opt/private/ssl/elastic-CA.crt --silent -in instances_elasticsearch.yml --pass 'Lgs-P4ssw0rd!' -out /opt/private/ssl/logstash-certificates.zip
+- name: "Create logstash certificates with elasticsearch-certutil"
+  command: >
+    /usr/share/elasticsearch/bin/elasticsearch-certutil cert \
+    --ca-key {{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }} \
+    --ca-cert {{ ca.dir }}/{{ ca.cert.file }} \
+    --ca-pass '{{ ca.key.pass }}' \
+    --silent \
+    -in instances_logstash.yml \
+    --pass '{{ certificates.logstash.pass }}' \
+    -out {{ ca.dir }}/logstash-certificates.zip
 ```
