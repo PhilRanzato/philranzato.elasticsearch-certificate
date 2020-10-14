@@ -10,7 +10,6 @@
     msg: "{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }} not found"
   when: not ca_pem.stat.exists
 
-# /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-key /opt/private/ssl/elastic-CA-key.pem --ca-pass 'El4stic!' --ca-cert /opt/private/ssl/elastic-CA.crt --silent -in instances_elasticsearch.yml --pass 'Lgs-P4ssw0rd!' -out /opt/private/ssl/logstash-certificates.zip
 - name: "Create logstash certificates with elasticsearch-certutil"
   command: >
     /usr/share/elasticsearch/bin/elasticsearch-certutil cert \

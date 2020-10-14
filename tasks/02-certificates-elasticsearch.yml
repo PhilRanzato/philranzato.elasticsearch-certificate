@@ -1,5 +1,4 @@
 ---
-# openssl rsa -in elastic-CA.key -passin pass:'El4stic!' -aes256 -passout pass:'El4stic!' -out elastic-CA-key.pem
 - name: "Convert CA key into pem format"
   command: |
     openssl rsa \
@@ -9,7 +8,6 @@
     -passout pass:'{{ ca.key.pass }}'
     -out {{ ca.dir }}/{{ ca.key.file | regex_replace('.key', '-key.pem') }}
 
-# /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-key /opt/private/ssl/elastic-CA-key.pem --ca-pass 'El4stic!' --ca-cert /opt/private/ssl/elastic-CA.crt --silent -in instances_elasticsearch.yml --pass 'Es-P4ssw0rd!' -out elasticsearch-certificates.zip
 - name: "Create elasticsearch certificates with elasticsearch-certutil"
   command: >
     /usr/share/elasticsearch/bin/elasticsearch-certutil cert \
