@@ -2,8 +2,8 @@ galaxy_info:
   author: Phil Ranzato
   description: Configure elasticsearch and logstash certificates
   company: KiratechCH
-  issue_tracker_url: https://github.com/PhilRanzato/pllr.elasticsearch-certificate/issues
-  license: Apache-2.0
+  issue_tracker_url: https://github.com/PhilRanzato/philranzato.elasticsearch-certificate/issues
+  license: MIT
   min_ansible_version: 2.3
   platforms:
   - name: Centos
